@@ -26,13 +26,7 @@ def createCircular(
                 content=CircleAvatar(
                     width=radius_number - circular_width,
                     height=radius_number - circular_width,
-                    bgcolor=circular_fill_color,
-                    content=Text(
-                        data_value,
-                        color=circular_color,
-                        size=20,
-                        text_align="center"
-                    )
+                    bgcolor=circular_fill_color
                 )
             )
 
@@ -148,7 +142,7 @@ def main(page: Page):
         )
 
     # 下加3线
-    max_number = 4
+    max_number = 3
     start_staff_value = 1
     for number in range(max_number):
         top_circular = createCircular(data_value=start_staff_value)
@@ -199,7 +193,21 @@ def main(page: Page):
         expand=True,
         alignment="center"
     )
-    page.add(m_column)
+
+    page.add(Stack(
+        [
+            m_column,
+            Image(
+                src=f"https://pic.ntimg.cn/file/20160530/22432193_145108213861_2.jpg",
+                width=200,
+                height=200,
+                fit="contain",
+                bottom=150,
+                top=150
+            )
+        ],
+        expand=True
+    ))
 
 
 flet.app(target=main)
