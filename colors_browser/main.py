@@ -84,7 +84,7 @@ def main(page: Page):
 
     page.add(
         version_2,
-        Row([moveto_button], alignment="start", )
+        Row([moveto_button], alignment="start")
     )
 
 

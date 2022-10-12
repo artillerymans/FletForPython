@@ -1,8 +1,8 @@
 import random
 
 from flet import *
-from flet import colors
-from flet.alignment import center_left, center
+from flet import colors, border, padding
+from flet.alignment import center_left, center, bottom_center
 
 CIRCULAR_RADIUS = 30
 CIRCULAR_STORE_WITH = 10
@@ -82,6 +82,31 @@ def createOutLine(divider_line: Divider, circle: CircleAvatar):
         alignment="center",
         vertical_alignment="center",
 
+    )
+
+
+key_map = {
+    "1": "C",
+    "2": "D",
+    "3": "E",
+    "4": "F",
+    "5": "G",
+    "6": "A",
+    "7": "B",
+}
+
+def createPianoKey(data_str: str, on_click):
+    global key_map
+    return Container(
+        content=Text(key_map[data_str], text_align="center"),
+        bgcolor=colors.BLACK12,
+        border=border.all(1, colors.LIGHT_GREEN_900),
+        width=45,
+        height=120,
+        data=data_str,
+        on_click=on_click,
+        alignment=bottom_center,
+        padding=padding.symmetric(9.0)
     )
 
 
@@ -177,15 +202,30 @@ def main(page: Page):
                 while_status = False
         page.update()
 
-    outlined_button = OutlinedButton("Random", on_click=randomStaff)
-    staff_list.append(outlined_button)
 
-    def checkAllStaff(e):
-        for item in circular_list:
-            print("item data = ", item.data, ", item visible = ", item.visible)
+    def onKeyPianoClick(e):
+        global last_choice_int
+        print(f"last_choice_int = {last_choice_int}")
+        if int(e.control.data) == last_choice_int:
+            randomStaff(None)
+        else:
+            page.snack_bar = SnackBar(Text("错误"), open=True, action="OK")
+            page.update()
 
-    check_button = OutlinedButton("Check Visible", on_click=checkAllStaff)
-    staff_list.append(check_button)
+    m_piano_Row = Row(
+        [
+            createPianoKey("1", on_click=onKeyPianoClick),
+            createPianoKey("2", on_click=onKeyPianoClick),
+            createPianoKey("3", on_click=onKeyPianoClick),
+            createPianoKey("4", on_click=onKeyPianoClick),
+            createPianoKey("5", on_click=onKeyPianoClick),
+            createPianoKey("6", on_click=onKeyPianoClick),
+            createPianoKey("7", on_click=onKeyPianoClick),
+        ],
+        alignment="center"
+    )
+
+    staff_list.append(m_piano_Row)
 
     m_column = Column(
         staff_list,
@@ -197,17 +237,11 @@ def main(page: Page):
     page.add(Stack(
         [
             m_column,
-            Image(
-                src=f"https://pic.ntimg.cn/file/20160530/22432193_145108213861_2.jpg",
-                width=200,
-                height=200,
-                fit="contain",
-                bottom=150,
-                top=150
-            )
         ],
         expand=True
     ))
+
+    randomStaff(None)
 
 
 flet.app(target=main)
