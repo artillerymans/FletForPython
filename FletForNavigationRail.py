@@ -66,7 +66,7 @@ def main(page: Page):
             [
                 rail,
                 VerticalDivider(width=1),
-                createColum(rail.selected_index),
+                mText,
             ],
             expand=True,
         )
